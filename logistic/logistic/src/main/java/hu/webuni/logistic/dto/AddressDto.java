@@ -1,9 +1,20 @@
 package hu.webuni.logistic.dto;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 public class AddressDto {
 
 	private long   id;
+	
+	@NotEmpty(message = "Set a code from 2 letters")
+	@Length(min = 2, max = 2, message="code most be setted from 2 letter")
 	private String codeISO; //max lenght 2
+	
 	private String city;
 	private String street;
 	private int    zipCode;
@@ -52,9 +63,9 @@ public class AddressDto {
 		){
 				this.codeISO = codeISO;
 			}
-		//else {
-		//	throw new Exception("allowed lenght: 2, use only letters"); 
-		//}
+		else {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	public String getCity() {

@@ -2,6 +2,8 @@ package hu.webuni.logistic.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +20,30 @@ import hu.webuni.logistic.repository.AddressRepository;
 @Service
 public class AddressService {
 
+	public AddressService(AddressRepository addressRepository) {
+		this.addressRepository = addressRepository;
+	}
+
 	@Autowired
 	AddressRepository addressRepository;
 	
+	@Transactional
+	public Address addAddress(Address newAddress) {
+		if( (newAddress == null)      ||
+			(newAddress.getId() != 0) ||
+				(
+					(newAddress.getCity()    .isEmpty()) ||
+					(newAddress.getZipCode() ==0)        ||
+					(newAddress.getCodeISO() .isEmpty()) ||
+					(newAddress.getStreet()  .isEmpty())
+				)
+			){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+		return addressRepository.save(newAddress);
+	}
+	
+	@Transactional
 	public Address modifiyById(long id, Address modderAddress) throws Exception {
 		Address address = addressRepository
 								.findById(id)
@@ -146,6 +169,7 @@ public class AddressService {
 			spec = spec.and(AddressSpecification.hasVerticalCircle(verticalCircle));
 		}
 		
+		
 		List<Address> returnList   = addressRepository.findAll(spec, Sort.by("id"));
 		Page<Address> pageableList = (Page<Address>) returnList;
 		
@@ -154,6 +178,25 @@ public class AddressService {
 		}
 		
 		return pageableList;
+	}
+
+	public List<Address> getAllAddress() {
+		List<Address> adds = addressRepository.findAll();
+		return adds;
+	}
+	
+	public Address getAddressById(long id) {
+		Address add = addressRepository
+							.findById(id)
+							.orElseThrow(
+				()-> new ResponseStatusException(HttpStatus.NOT_FOUND)); 
+		
+		return add;
+	}
+
+	@Transactional
+	public void deleteAddressById(long id) {
+		addressRepository.deleteById(id);
 	}
 }
 

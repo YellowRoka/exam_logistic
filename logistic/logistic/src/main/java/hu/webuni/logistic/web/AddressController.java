@@ -1,12 +1,16 @@
 package hu.webuni.logistic.web;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,7 +22,6 @@ import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.logistic.dto.AddressDto;
 import hu.webuni.logistic.mapper.AddressMapping;
 import hu.webuni.logistic.model.Address;
-import hu.webuni.logistic.repository.AddressRepository;
 import hu.webuni.logistic.service.AddressService;
 
 @RestController
@@ -31,6 +34,33 @@ public class AddressController {
 	@Autowired
 	AddressService addressService;
 
+	@PostMapping
+	public AddressDto addAddress(@RequestBody AddressDto newAddressDto) {
+		
+		Address newAddress   = addressMapping.dtoToModel(newAddressDto); 
+		Address addedAddress = addressService.addAddress(newAddress);
+		
+		return addressMapping.modelToDto(addedAddress);
+	}
+	
+	@GetMapping
+	public List<AddressDto> getAllAddress(){
+		return addressMapping.modelsToDtos(
+								addressService.getAllAddress());
+	}
+	
+	@GetMapping("/{id}")
+	public AddressDto getAddressById(@PathVariable long id) {
+		Address address    = addressService.getAddressById(id);
+		AddressDto gettedAddress = addressMapping.modelToDto(address);
+		return gettedAddress;
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deleteAddress(@PathVariable long id) {
+		addressService.deleteAddressById(id);
+	}
+	
 	@PutMapping("/{id}")
 	public AddressDto modifyAddress(@PathVariable long id,  
 									@RequestBody AddressDto addressDto) {
@@ -71,6 +101,23 @@ public class AddressController {
 	@PostMapping("/search")
 	public Page<AddressDto> searchAddressesByExample(@RequestBody AddressDto addressDto,Pageable pageable){
 		Address       example   = addressMapping.dtoToModel(addressDto);	
+		
+		Direction defDirection = Direction.ASC;
+		//int size;
+		//int pageNumber;
+		//Sort sorting;
+		
+		int size       = pageable.getPageSize();
+		int pageNumber = pageable.getPageNumber();
+		Sort sorting   = pageable.getSort();
+		Order oreder   = pageable.getSort().getOrderFor("ASC");
+		
+		//if(size == 0)
+		//if(page == null)
+		//if(sorting == null)
+		//if(direction == null)
+		
+		
 		Page<Address> addresses = addressService.searchAddressesByExample(pageable,example);
 		
 		return addresses.map(addressMapping::modelToDto);

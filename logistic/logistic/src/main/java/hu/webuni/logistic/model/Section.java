@@ -14,7 +14,7 @@ public class Section {
 	@Id
 	@GeneratedValue
 	private long      id;
-	private int       number;
+	private int       number=-1;
 	
 	@OneToOne
 	private Milestone fromMilestone;

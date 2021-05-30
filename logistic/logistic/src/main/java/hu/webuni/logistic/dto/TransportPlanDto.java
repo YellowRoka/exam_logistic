@@ -4,16 +4,16 @@ import java.util.List;
 
 import hu.webuni.logistic.model.Section;
 
-public class TransporterPlanDto {
+public class TransportPlanDto {
 
 	private long          id;
-	private int           inCome;
+	private double        inCome;
 	private List<Section> sections;
 	
 	
-	public TransporterPlanDto() {}
+	public TransportPlanDto() {}
 
-	public TransporterPlanDto(long id, int inCome, List<Section> sections) {
+	public TransportPlanDto(long id, int inCome, List<Section> sections) {
 		super();
 		this.id = id;
 		this.inCome = inCome;
@@ -28,8 +28,12 @@ public class TransporterPlanDto {
 		this.id = id;
 	}
 
-	public int getInCome() {
+	public double getInCome() {
 		return inCome;
+	}
+	
+	public void setInCome(double inCome) {
+		this.inCome = inCome;
 	}
 	
 	public List<Section> getSections() {

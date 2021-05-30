@@ -16,14 +16,14 @@ public class TransportPlan {
 	@Id
 	@GeneratedValue
 	private long          id;
-	private int           inCome;
+	private double        inCome;
 	
 	@OneToMany(mappedBy= "transportPlan")
 	private List<Section> sections;
 	
 	
 	public TransportPlan() {}
-	public TransportPlan(long id, int inCome, List<Section> sections) {
+	public TransportPlan(long id, double inCome, List<Section> sections) {
 		//super();
 		this.id = id;
 		this.inCome = inCome;
@@ -39,11 +39,11 @@ public class TransportPlan {
 		this.id = id;
 	}
 
-	public int getInCome() {
+	public double getInCome() {
 		return inCome;
 	}
 
-	public void setInCome(int inCome) {
+	public void setInCome(double inCome) {
 		this.inCome = inCome;
 	}
 

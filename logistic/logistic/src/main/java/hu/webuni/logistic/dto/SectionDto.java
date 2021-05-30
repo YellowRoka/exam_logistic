@@ -7,7 +7,7 @@ public class SectionDto {
 	private long      id;
 	private Milestone fromMilestone;
 	private Milestone toMilestone;
-	private int       number;
+	private int       number = -1;
 	
 	
 	public SectionDto() {};
