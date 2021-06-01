@@ -23,7 +23,7 @@ public class TransportPlanController {
 	TransportPlanMapper transportPlanMapper;
 
 	
-	@PostMapping("/{id}")
+	@PostMapping("/{id}/delay")
 	public TransportPlanDto delayRegster(
 			@PathVariable long id,
 			@RequestParam(value="stoneId") long stoneId,

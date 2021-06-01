@@ -3,6 +3,9 @@ package hu.webuni.logistic.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -21,14 +24,15 @@ public class Address {
 	private double horizontalCircle; //szélességi //latitude
 	private double verticalCircle;   //hosszúsági  //longitude  
 	
+	//@ManyToOne//(mappedBy = "address")
 	@OneToOne
 	private Milestone milestone;
 	
 	public Address(){}
-	public Address(long id, String codeISO, String city, String street, int zipCode, int hauseNumber,
+	public Address(/*long id,*/ String codeISO, String city, String street, int zipCode, int hauseNumber,
 			double horizontalCircle, double verticalCircle) {
 		//super();
-		this.id = id;
+		//this.id = id;
 		this.codeISO = codeISO;
 		this.city = city;
 		this.street = street;
@@ -118,5 +122,15 @@ public class Address {
 		this.verticalCircle = verticalCircle;
 	};
 
+	public void setMilestone(Milestone milestone) {
+		milestone.setAddress(this);
+		if(this.milestone == null)
+			this.milestone = milestone;
+	}
+	
+	public Milestone getMilestone() {
+		return this.milestone;
+	}
+	
 	
 }

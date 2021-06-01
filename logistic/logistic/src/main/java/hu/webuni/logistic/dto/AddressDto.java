@@ -1,6 +1,5 @@
 package hu.webuni.logistic.dto;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;

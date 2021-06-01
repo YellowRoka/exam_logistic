@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -120,7 +122,8 @@ public class AddressService {
 		return returnList;
 	}
 
-	public Page<Address> searchAddressesByExample(Pageable pageable, Address example) {
+	public Page<Address> searchAddressesByExamplePaged(Pageable pageable, Address example,String sortBy) {
+	//public Page<Address> searchAddressesByExamplePaged(Pageable pageable, Address example) {
 		if(example == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST); 
 		}
@@ -170,14 +173,15 @@ public class AddressService {
 		}
 		
 		
-		List<Address> returnList   = addressRepository.findAll(spec, Sort.by("id"));
-		Page<Address> pageableList = (Page<Address>) returnList;
+		Page<Address> returnList   = new PageImpl<>(addressRepository.findAll(spec, Sort.by(sortBy)) );
+		//Page<Address> pageableList = addressRepository.findAll(pageable);
+		//Page<Address> pageableList2 = addressRepository.findAll(pageable,spec);
 		
-		if(pageableList.isEmpty()) {
+		if(returnList.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST); 
 		}
 		
-		return pageableList;
+		return returnList;
 	}
 
 	public List<Address> getAllAddress() {
@@ -198,5 +202,7 @@ public class AddressService {
 	public void deleteAddressById(long id) {
 		addressRepository.deleteById(id);
 	}
+
+
 }
 

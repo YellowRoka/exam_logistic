@@ -27,9 +27,9 @@ public class Section {
 	
 	
 	public Section() {};
-	public Section(long id, Milestone fromMilestone, Milestone toMilestone, int number) {
+	public Section(/*long id,*/ Milestone fromMilestone, Milestone toMilestone, int number) {
 		//super();
-		this.id = id;
+		//this.id = id;
 		this.fromMilestone = fromMilestone;
 		this.toMilestone = toMilestone;
 		this.number = number;
@@ -48,16 +48,28 @@ public class Section {
 		return fromMilestone;
 	}
 
-	public void setFromMilestone(Milestone fromMilestone) {
-		this.fromMilestone = fromMilestone;
-	}
+	//public void setFromMilestone(Milestone fromMilestone) {
+	//	this.fromMilestone = fromMilestone;
+	//}
 
+	//public Milestone getToMilestone4From() {
+	//	return fromMilestone;
+	//}
+	
 	public Milestone getToMilestone() {
 		return toMilestone;
 	}
 
 	public void setToMilestone(Milestone toMilestone) {
-		this.toMilestone = toMilestone;
+		//toMilestone.setSection4To(this);
+		if(this.toMilestone == null)
+			this.toMilestone = toMilestone;
+	}
+	
+	public void setFromMilestone(Milestone fromMilestone) {
+		//fromMilestone.setSection4From(this);
+		if(this.fromMilestone == null)
+			this.fromMilestone = fromMilestone;
 	}
 
 	public int getNumber() {
@@ -68,5 +80,14 @@ public class Section {
 		this.number = number;
 	}
 	
+	public TransportPlan getTransportPlan() {
+		return transportPlan;
+	}
+
+	public void setTransportPlan(TransportPlan transportPlan) {
+		//transportPlan.addSections(this);
+		if(this.transportPlan == null)
+			this.transportPlan = transportPlan;
+	}
 	
 }

@@ -1,5 +1,7 @@
 package hu.webuni.logistic.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import hu.webuni.logistic.model.Milestone;
+import hu.webuni.logistic.model.Section;
 import hu.webuni.logistic.model.TransportPlan;
 import hu.webuni.logistic.repository.MilestoneRepository;
 import hu.webuni.logistic.repository.TransportPlanRepository;
@@ -57,38 +60,39 @@ public class TransportPlanService {
 		
 		double income = 0;
 		
-		for(idx = 0; idx <transPlan.getSections().size() ; idx++) {
+		List<Section> sections = transPlan.getSections();
+		for(idx = 0; idx <sections.size() ; idx++) {
 			
-			if(transPlan.getSections().get(idx).getFromMilestone().getId() == stoneId) {
+			if(sections.get(idx).getFromMilestone().getId() == stoneId) {
 				fromFinded = true;
 				break;
 			}
 			
-			if(transPlan.getSections().get(idx).getToMilestone().getId() == stoneId) {
+			if(sections.get(idx).getToMilestone().getId() == stoneId) {
 				toFinded = true;
 				break;
 			}
 		}
 		
-		if (fromFinded == false || toFinded == false){
+		if (fromFinded == false && toFinded == false){
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 
 
 		
 		if(fromFinded) {
-			fromMilestone = transPlan.getSections().get(idx).getFromMilestone();
+			fromMilestone = sections.get(idx).getFromMilestone();
 			fromMilestone.setPlannedTime(fromMilestone.getPlannedTime().plusMinutes(delay));
 			
-			toMilestone = transPlan.getSections().get(idx).getToMilestone();
+			toMilestone = sections.get(idx).getToMilestone();
 			toMilestone.setPlannedTime(toMilestone.getPlannedTime().plusMinutes(delay));
 		}
 		
 		if(toFinded) {
-			toMilestone = transPlan.getSections().get(idx).getToMilestone();
+			toMilestone = sections.get(idx).getToMilestone();
 			toMilestone.setPlannedTime(toMilestone.getPlannedTime().plusMinutes(delay));
 			
-			fromMilestone = transPlan.getSections().get(idx+1).getFromMilestone();
+			fromMilestone = sections.get(idx+1).getFromMilestone();
 			fromMilestone.setPlannedTime(fromMilestone.getPlannedTime().plusMinutes(delay));	
 		}
 		

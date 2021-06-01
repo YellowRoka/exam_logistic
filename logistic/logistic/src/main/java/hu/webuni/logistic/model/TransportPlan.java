@@ -1,6 +1,9 @@
 package hu.webuni.logistic.model;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,9 +26,9 @@ public class TransportPlan {
 	
 	
 	public TransportPlan() {}
-	public TransportPlan(long id, double inCome, List<Section> sections) {
+	public TransportPlan(/*long id,*/ double inCome, List<Section> sections) {
 		//super();
-		this.id = id;
+		//this.id = id;
 		this.inCome = inCome;
 		this.sections = sections;
 	}
@@ -52,7 +55,17 @@ public class TransportPlan {
 	}
 
 	public void setSections(List<Section> sections) {
-		this.sections = sections;
+		
+		sections.stream().forEach(it -> it.setTransportPlan(this));
+			
+		if(this.sections != null)
+			this.sections = sections;
+	};
+	
+	public void addSections(Section section) {
+		section.setTransportPlan(this);
+		if(this.sections != null)
+			this.sections.add(section);
 	};
 	
 	

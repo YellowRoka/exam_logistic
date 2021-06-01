@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -99,26 +101,32 @@ public class AddressController {
 	
 	// http://localhost:8080/api/addresses/search?page=0&size=1
 	@PostMapping("/search")
-	public Page<AddressDto> searchAddressesByExample(@RequestBody AddressDto addressDto,Pageable pageable){
+	public Page<AddressDto> searchAddressesByExample(@RequestBody AddressDto addressDto,Pageable pageable, String sortBy,Direction direction){
 		Address       example   = addressMapping.dtoToModel(addressDto);	
 		
-		Direction defDirection = Direction.ASC;
+		//Direction direction = Direction.ASC;
 		//int size;
-		//int pageNumber;
-		//Sort sorting;
-		
-		int size       = pageable.getPageSize();
+		//int page;
+		int pageSize   = pageable.getPageSize();
 		int pageNumber = pageable.getPageNumber();
 		Sort sorting   = pageable.getSort();
 		Order oreder   = pageable.getSort().getOrderFor("ASC");
 		
-		//if(size == 0)
-		//if(page == null)
-		//if(sorting == null)
-		//if(direction == null)
+		if(pageSize == 0)
+			pageSize = 1;
+		if(pageNumber == 0)
+			pageNumber= 1;
+		if(direction == Direction.DESC)
+			direction = Direction.DESC;
 		
 		
-		Page<Address> addresses = addressService.searchAddressesByExample(pageable,example);
+		Page<Address> addresses = addressService.searchAddressesByExamplePaged(pageable,example,sortBy);
+		
+		//Page<Address> addresses = 
+		//		addressService.searchAddressesByExamplePaged(
+		//				new PageRequest(page, pageSize, sorting),//, new Sort(direction, "addressId")),
+		//				example);
+		
 		
 		return addresses.map(addressMapping::modelToDto);
 	}
