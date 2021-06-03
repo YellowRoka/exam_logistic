@@ -51,15 +51,16 @@ public class TransportPlanService {
 									.findById(id)
 									.orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		
+		
 		int     idx        = 0;
 		boolean fromFinded = false;
 		boolean toFinded   = false;
+		double  income     = 0.0;
 		
 		Milestone fromMilestone = null;
 		Milestone toMilestone   = null;
 		
-		double income = 0;
-		
+
 		List<Section> sections = transPlan.getSections();
 		for(idx = 0; idx <sections.size() ; idx++) {
 			
@@ -77,7 +78,6 @@ public class TransportPlanService {
 		if (fromFinded == false && toFinded == false){
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-
 
 		
 		if(fromFinded) {
@@ -102,15 +102,13 @@ public class TransportPlanService {
 		income = transPlan.getInCome();
 		
 		
-				
-				
-		if(MIN_LOW_VALUE>=delay && MIN_MED_VALUE<delay) {
+		if(MIN_LOW_VALUE>=delay && MIN_MED_VALUE>delay) {
 			income = (1-MIN_LOW_PERCENT)*income;
 		}
-		else if(MIN_MED_VALUE>=delay && MIN_HIGH_VALUE<=delay) {
+		else if(MIN_MED_VALUE<=delay && MIN_HIGH_VALUE>delay) {
 			income = (1-MIN_MED_PERCENT)*income;		
 		}
-		else if(MIN_HIGH_VALUE>=delay) {
+		else if(MIN_HIGH_VALUE<=delay) {
 			income = (1-MIN_HIGH_PERCENT)*income;
 		}
 		transPlan.setInCome(income);
@@ -118,4 +116,5 @@ public class TransportPlanService {
 		return transportPlanRepository.save(transPlan);
 	}
 
+	
 }

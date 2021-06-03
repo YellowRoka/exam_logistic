@@ -8,12 +8,12 @@ public class TransportPlanDto {
 
 	private long          id;
 	private double        inCome;
-	private List<Section> sections;
+	private List<SectionDto> sections;
 	
 	
 	public TransportPlanDto() {}
 
-	public TransportPlanDto(long id, int inCome, List<Section> sections) {
+	public TransportPlanDto(long id, int inCome, List<SectionDto> sections) {
 		super();
 		this.id = id;
 		this.inCome = inCome;
@@ -36,11 +36,11 @@ public class TransportPlanDto {
 		this.inCome = inCome;
 	}
 	
-	public List<Section> getSections() {
+	public List<SectionDto> getSections() {
 		return sections;
 	}
 
-	public void setSections(List<Section> sections) {
+	public void setSections(List<SectionDto> sections) {
 		this.sections = sections;
 	};
 

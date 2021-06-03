@@ -39,10 +39,10 @@ public class InitDBService {
 	
 	@Transactional
 	public void clearDB() {
-		 transportPlanRepository.deleteAll();
-		 sectionRepository.deleteAll();
-		 milestoneRepository.deleteAll();
-		 addressRepository.deleteAll();	
+		sectionRepository.deleteAll();
+		transportPlanRepository.deleteAll();
+		milestoneRepository.deleteAll();
+		addressRepository.deleteAll();	
 	}
 
 	//@Transactional

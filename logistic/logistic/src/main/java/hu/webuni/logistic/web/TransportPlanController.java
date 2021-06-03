@@ -31,6 +31,10 @@ public class TransportPlanController {
 		
 		TransportPlan transPlan = transportPlanService.deleyRegister(id,stoneId,delay);
 		
-		return transportPlanMapper.modelToDto(transPlan);
+		
+		TransportPlanDto transPlanDto = transportPlanMapper.modelToDto(transPlan);
+		transPlanDto.getSections().forEach(it->it.setTransportPlan(null));
+		
+		return transPlanDto;
 	}
 }

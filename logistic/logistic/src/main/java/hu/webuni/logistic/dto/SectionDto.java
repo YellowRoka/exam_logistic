@@ -1,13 +1,15 @@
 package hu.webuni.logistic.dto;
 
 import hu.webuni.logistic.model.Milestone;
+import hu.webuni.logistic.model.TransportPlan;
 
 public class SectionDto {
 
-	private long      id;
-	private Milestone fromMilestone;
-	private Milestone toMilestone;
-	private int       number = -1;
+	private long          id;
+	private Milestone     fromMilestone;
+	private Milestone     toMilestone;
+	private int           number = -1;
+	private TransportPlan  transportPlan;
 	
 	
 	public SectionDto() {};
@@ -50,6 +52,14 @@ public class SectionDto {
 
 	public void setNumber(int number) {
 		this.number = number;
+	}
+	
+	public TransportPlan getTransportPlan() {
+		return transportPlan;
+	}
+
+	public void setTransportPlan(TransportPlan transportPlan) {
+			this.transportPlan = transportPlan;
 	}
 	
 	

@@ -1,4 +1,4 @@
-package hu.webuni.hr.roka;
+package hu.webuni.logistic.roka;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
