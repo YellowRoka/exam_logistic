@@ -20,6 +20,7 @@ public class AddressDto {
 	private int    hauseNumber;
 	private double horizontalCircle; //szélességi //latitude
 	private double verticalCircle;   //hosszúsági  //longitude  
+
 	
 	public AddressDto(){}
 	public AddressDto(long id, String codeISO, String city, String street, int zipCode, int hauseNumber,

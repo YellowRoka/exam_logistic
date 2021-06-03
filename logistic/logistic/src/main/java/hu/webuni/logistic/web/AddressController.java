@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.querydsl.QPageRequest;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import hu.webuni.logistic.dto.AddressDto;
 import hu.webuni.logistic.mapper.AddressMapping;
 import hu.webuni.logistic.model.Address;
 import hu.webuni.logistic.service.AddressService;
+import hu.webuni.logistic.service.ExtendedPage;
 
 @RestController
 @RequestMapping("/api/addresses")
@@ -99,35 +101,21 @@ public class AddressController {
 	}
 	*/
 	
-	// http://localhost:8080/api/addresses/search?page=0&size=1
+	//sample: http://localhost:8080/api/addresses/search?page=0&size=1
 	@PostMapping("/search")
-	public Page<AddressDto> searchAddressesByExample(@RequestBody AddressDto addressDto,Pageable pageable, String sortBy,Direction direction){
+	public ExtendedPage<AddressDto> searchAddressesByExample( @RequestBody AddressDto addressDto,
+													  @SortDefault(sort = "id", direction = Sort.Direction.DESC)Pageable pageable){
+		
 		Address       example   = addressMapping.dtoToModel(addressDto);	
 		
-		//Direction direction = Direction.ASC;
-		//int size;
-		//int page;
-		int pageSize   = pageable.getPageSize();
-		int pageNumber = pageable.getPageNumber();
-		Sort sorting   = pageable.getSort();
-		Order oreder   = pageable.getSort().getOrderFor("ASC");
+		Page<Address> addresses = addressService.searchAddressesByExamplePaged(pageable, example/*, sortBy*/);
+
+		Page<AddressDto> retMap = addresses.map(addressMapping::modelToDto);
 		
-		if(pageSize == 0)
-			pageSize = 1;
-		if(pageNumber == 0)
-			pageNumber= 1;
-		if(direction == Direction.DESC)
-			direction = Direction.DESC;
+		ExtendedPage<AddressDto> EP = new ExtendedPage<AddressDto>();
+		EP.setPages(retMap);
+		EP.setX_Total_Count(retMap.getTotalElements());
 		
-		
-		Page<Address> addresses = addressService.searchAddressesByExamplePaged(pageable,example,sortBy);
-		
-		//Page<Address> addresses = 
-		//		addressService.searchAddressesByExamplePaged(
-		//				new PageRequest(page, pageSize, sorting),//, new Sort(direction, "addressId")),
-		//				example);
-		
-		
-		return addresses.map(addressMapping::modelToDto);
+		return EP;
 	}
 }

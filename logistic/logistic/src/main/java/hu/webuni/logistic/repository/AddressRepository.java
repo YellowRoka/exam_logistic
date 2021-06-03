@@ -25,4 +25,9 @@ public interface AddressRepository extends JpaRepository<Address,Long>,JpaSpecif
 	
 	@Query("SELECT a FROM Address a")
 	public Page<Address> findAll(Pageable pageable,Specification<?> spec);
+	
+	 //@Query("SELECT a FROM Address a where a.movie = :movie")
+	@Query("SELECT a FROM Address a ")
+	 public Page<Address> findByParams(Pageable pageable,Specification<?> spec);
+	      //@Param("movie") String movieName, Sort sort);
 }

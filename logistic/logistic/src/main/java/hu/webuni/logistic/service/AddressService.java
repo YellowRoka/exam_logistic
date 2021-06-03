@@ -1,6 +1,7 @@
 package hu.webuni.logistic.service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +11,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -122,8 +125,7 @@ public class AddressService {
 		return returnList;
 	}
 
-	public Page<Address> searchAddressesByExamplePaged(Pageable pageable, Address example,String sortBy) {
-	//public Page<Address> searchAddressesByExamplePaged(Pageable pageable, Address example) {
+	public Page<Address> searchAddressesByExamplePaged(Pageable pageable, Address example) {
 		if(example == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST); 
 		}
@@ -173,9 +175,24 @@ public class AddressService {
 		}
 		
 		
-		Page<Address> returnList   = new PageImpl<>(addressRepository.findAll(spec, Sort.by(sortBy)) );
-		//Page<Address> pageableList = addressRepository.findAll(pageable);
-		//Page<Address> pageableList2 = addressRepository.findAll(pageable,spec);
+		int size = pageable.getPageSize();
+		int page = pageable.getPageNumber();
+		Sort sort = Sort.by(Direction.DESC,"id");
+		
+		if(pageable.getPageNumber() == 0 ) {
+			page = 0;
+		}
+		
+		if(pageable.getPageSize() == 20 ) {
+			size = Integer.MAX_VALUE;
+			page = 0;
+		}
+		
+		/*pageable = PageRequest.of(page, size,Sort.by(Direction.ASC,"name"));*/
+		pageable = PageRequest.of(page, size, pageable.getSort());
+		
+		Page<Address> returnList = addressRepository.findByParams(pageable, spec);
+		
 		
 		if(returnList.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST); 
