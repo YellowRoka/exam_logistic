@@ -91,8 +91,8 @@ public class InitDBService {
 	*/		
 		//sections = sectionRepository.saveAll(sections);
 			
-		TransportPlan tplan = new TransportPlan(30000, sections);
-			 transportPlanRepository.save(tplan);
+		//TransportPlan tplan = new TransportPlan(30000, sections);
+		TransportPlan tplan = transportPlanRepository.save(new TransportPlan(30000,sections));
 			 
 		sections.forEach(it->it.setTransportPlan(tplan));
 			sections = sectionRepository.saveAll(sections);

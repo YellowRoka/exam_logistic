@@ -1,10 +1,14 @@
 package hu.webuni.logistic.dto;
 
+import java.util.List;
+
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import hu.webuni.logistic.model.Milestone;
 
 public class AddressDto {
 
@@ -19,7 +23,9 @@ public class AddressDto {
 	private int    zipCode;
 	private int    hauseNumber;
 	private double horizontalCircle; //szélességi //latitude
-	private double verticalCircle;   //hosszúsági  //longitude  
+	private double verticalCircle;   //hosszúsági  //longitude
+	
+	private List<Milestone> milestone;
 
 	
 	public AddressDto(){}
@@ -116,5 +122,19 @@ public class AddressDto {
 		this.verticalCircle = verticalCircle;
 	};
 
+	public void setMilestone(List<Milestone> milestone) {
+		this.milestone = milestone;
+	}
 	
+	public void addMilestone(Milestone milestone) {
+		this.milestone.add(milestone);
+	}
+	
+	public List<Milestone> getMilestone() {
+		return this.milestone;
+	}
+	
+	public Milestone getMilestone(int idx) {
+		return this.milestone.get(idx);
+	}
 }

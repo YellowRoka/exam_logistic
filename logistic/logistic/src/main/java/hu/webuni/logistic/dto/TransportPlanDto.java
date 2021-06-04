@@ -36,6 +36,10 @@ public class TransportPlanDto {
 		this.inCome = inCome;
 	}
 	
+	public SectionDto getSection(int idx) {
+		return sections.get(idx);
+	}
+	
 	public List<SectionDto> getSections() {
 		return sections;
 	}
@@ -43,6 +47,11 @@ public class TransportPlanDto {
 	public void setSections(List<SectionDto> sections) {
 		this.sections = sections;
 	};
+	
+	public void addSection(SectionDto section) {
+		this.sections.add(section);
+	};
+
 
 
 }

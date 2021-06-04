@@ -1,6 +1,8 @@
 package hu.webuni.logistic.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,9 +21,9 @@ public class Milestone {
 	@GeneratedValue
 	private long          id;
 	
-	//@OneToMany(mappedBy = "milestone")
-	@OneToOne
-	private Address       address;
+	@ManyToMany//(mappedBy = "milestone")
+	//@OneToOne
+	private List<Address>       address = new ArrayList<>();
 	
 	@OneToOne
 	private Section 	  section;
@@ -32,7 +34,7 @@ public class Milestone {
 	public Milestone(/*long id,*/ Address address, LocalDateTime plannedTime) {
 		//super();
 		//this.id = id;
-		this.address = address;
+		this.address.add(address);
 		this.plannedTime = plannedTime;
 	}
 	
@@ -56,14 +58,19 @@ public class Milestone {
 		this.plannedTime = plannedTime;
 	}
 
-	public void setAddress(Address address) {
-		address.setMilestone(this);
+	public void addAddress(Address address) {
+		address.addMilestone(this);
+		if(this.address == null)
+			this.address.add(address);
+	}
+	
+	public void setAddress(List<Address> address) {
 		if(this.address == null)
 			this.address = address;
 	}
 	
-	public Address getAddress() {
-		return this.address;
+	public Address getAddress(int idx) {
+		return this.address.get(idx);
 	}
 
 	public void setSection4From(Section section) {

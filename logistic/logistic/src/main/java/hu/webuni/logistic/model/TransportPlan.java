@@ -50,6 +50,10 @@ public class TransportPlan {
 		this.inCome = inCome;
 	}
 
+	public Section getSection(int idx) {
+		return sections.get(idx);
+	}
+	
 	public List<Section> getSections() {
 		return sections;
 	}
@@ -58,7 +62,7 @@ public class TransportPlan {
 		
 		sections.stream().forEach(it -> it.setTransportPlan(this));
 			
-		if(this.sections != null)
+		if(this.sections == null)
 			this.sections = sections;
 	};
 	

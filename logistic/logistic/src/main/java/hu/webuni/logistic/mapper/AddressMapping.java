@@ -15,5 +15,7 @@ public interface AddressMapping {
 	public AddressDto modelToDto(Address address);
 
 	public List<AddressDto> modelsToDtos(List<Address> addresses);
+	
+	//public List<Address> dtosToModel(List<AddressDto> addressesDto);
 
 }

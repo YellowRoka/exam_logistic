@@ -101,7 +101,7 @@ public class AddressController {
 	}
 	*/
 	
-	//sample: http://localhost:8080/api/addresses/search?page=0&size=1
+	//sample: http://localhost:8080/api/addresses/search?page=0&size=1,asc
 	@PostMapping("/search")
 	public ExtendedPage<AddressDto> searchAddressesByExample( @RequestBody AddressDto addressDto,
 													  @SortDefault(sort = "id", direction = Sort.Direction.DESC)Pageable pageable){

@@ -1,5 +1,7 @@
 package hu.webuni.logistic.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -24,9 +26,9 @@ public class Address {
 	private double horizontalCircle; //szélességi //latitude
 	private double verticalCircle;   //hosszúsági  //longitude  
 	
-	//@ManyToOne//(mappedBy = "address")
-	@OneToOne
-	private Milestone milestone;
+	@ManyToMany(mappedBy = "address")
+	//@OneToOne
+	private List<Milestone> milestone;
 	
 	public Address(){}
 	public Address(/*long id,*/ String codeISO, String city, String street, int zipCode, int hauseNumber,
@@ -122,14 +124,28 @@ public class Address {
 		this.verticalCircle = verticalCircle;
 	};
 
-	public void setMilestone(Milestone milestone) {
+	/*public void setMilestone(Milestone milestone) {
 		milestone.setAddress(this);
 		if(this.milestone == null)
-			this.milestone = milestone;
+			this.milestone.add(milestone);// = milestone;
+	}*/
+	
+	public void setMilestone(List<Milestone> milestone) {
+		this.milestone = milestone;
 	}
 	
-	public Milestone getMilestone() {
+	public void addMilestone(Milestone milestone) {
+		milestone.addAddress(this);
+		if(this.milestone == null)
+			this.milestone.add(milestone);
+	}
+	
+	public List<Milestone> getMilestones() {
 		return this.milestone;
+	}
+	
+	public Milestone getMilestone(int idx) {
+		return this.milestone.get(idx);
 	}
 	
 	
