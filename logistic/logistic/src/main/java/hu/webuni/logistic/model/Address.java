@@ -26,9 +26,8 @@ public class Address {
 	private double horizontalCircle; //szélességi //latitude
 	private double verticalCircle;   //hosszúsági  //longitude  
 	
-	@ManyToMany(mappedBy = "address")
-	//@OneToOne
-	private List<Milestone> milestone;
+	@ManyToOne//(mappedBy = "address")
+	private Milestone milestone;
 	
 	public Address(){}
 	public Address(/*long id,*/ String codeISO, String city, String street, int zipCode, int hauseNumber,
@@ -130,23 +129,23 @@ public class Address {
 			this.milestone.add(milestone);// = milestone;
 	}*/
 	
-	public void setMilestone(List<Milestone> milestone) {
+	public void addMilestone(Milestone milestone) {
 		this.milestone = milestone;
 	}
 	
-	public void addMilestone(Milestone milestone) {
-		milestone.addAddress(this);
-		if(this.milestone == null)
-			this.milestone.add(milestone);
-	}
+	//public void addMilestone(Milestone milestone) {
+	//	milestone.addAddress(this);
+	//	if(this.milestone == null)
+	//		this.milestone.add(milestone);
+	//}
 	
-	public List<Milestone> getMilestones() {
+	public Milestone getMilestone() {
 		return this.milestone;
 	}
 	
-	public Milestone getMilestone(int idx) {
-		return this.milestone.get(idx);
-	}
+	//public Milestone getMilestone(int idx) {
+	//	return this.milestone.get(idx);
+	//}
 	
 	
 }

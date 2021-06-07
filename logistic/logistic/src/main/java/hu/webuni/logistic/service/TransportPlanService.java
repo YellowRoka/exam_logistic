@@ -92,17 +92,19 @@ public class TransportPlanService {
 			toMilestone = sections.get(idx).getToMilestone();
 			toMilestone.setPlannedTime(toMilestone.getPlannedTime().plusMinutes(delay));
 			
-			fromMilestone = sections.get(idx+1).getFromMilestone();
-			fromMilestone.setPlannedTime(fromMilestone.getPlannedTime().plusMinutes(delay));	
+			if(sections.size()>idx+1) {
+				fromMilestone = sections.get(idx+1).getFromMilestone();
+				fromMilestone.setPlannedTime(fromMilestone.getPlannedTime().plusMinutes(delay));
+			}	
 		}
 		
-		milestoneRepository.save(fromMilestone);
-		milestoneRepository.save(toMilestone);
+		//milestoneRepository.save(fromMilestone);
+		//milestoneRepository.save(toMilestone);
 		
 		income = transPlan.getInCome();
 		
 		
-		if(MIN_LOW_VALUE>=delay && MIN_MED_VALUE>delay) {
+		if(MIN_LOW_VALUE<=delay && MIN_MED_VALUE>delay) {
 			income = (1-MIN_LOW_PERCENT)*income;
 		}
 		else if(MIN_MED_VALUE<=delay && MIN_HIGH_VALUE>delay) {

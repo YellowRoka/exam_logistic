@@ -130,21 +130,21 @@ public class AddressService {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST); 
 		}
 		
-		long   id               = example.getId();
-		String city             = example.getCity();
-		String iso              = example.getCodeISO();
-		int    hauseNumber      = example.getHauseNumber();
-		double horizontalCircle = example.getHorizontalCircle();
-		double verticalCircle   = example.getVerticalCircle();
-		String street           = example.getStreet();
-		int    zipCode          = example.getZipCode();
+		//long   id               = example.getId();
+		String city             = example.getCity();//
+		String iso              = example.getCodeISO();//
+		//int    hauseNumber      = example.getHauseNumber();
+		//double horizontalCircle = example.getHorizontalCircle();
+		//double verticalCircle   = example.getVerticalCircle();
+		String street           = example.getStreet();//
+		int    zipCode          = example.getZipCode();//
 		
 		Specification<Address> spec  = Specification.where(null);
 
 		
-		if(id >0) {
-			spec = spec.and(AddressSpecification.hasId(id));
-		}
+		//if(id >0) {
+		//	spec = spec.and(AddressSpecification.hasId(id));
+		//}
 		
 		if(StringUtils.hasText(city)) {
 			spec = spec.and(AddressSpecification.hasCity(city));
@@ -158,21 +158,21 @@ public class AddressService {
 			spec = spec.and(AddressSpecification.hasStreet(street));
 		}
 		
-		if(hauseNumber>0) {
-			spec = spec.and(AddressSpecification.hasHauseNumber(hauseNumber));
-		}
+		//if(hauseNumber>0) {
+		//	spec = spec.and(AddressSpecification.hasHauseNumber(hauseNumber));
+		//}
 		
 		if(zipCode>0) {
 			spec = spec.and(AddressSpecification.hasZipCode(zipCode));
 		}
 		
-		if(horizontalCircle>0.0) {
-			spec = spec.and(AddressSpecification.hasHorizontalCircle(horizontalCircle));
-		}
+		//if(horizontalCircle>0.0) {
+		//	spec = spec.and(AddressSpecification.hasHorizontalCircle(horizontalCircle));
+		//}
 		
-		if(verticalCircle>0.0) {
-			spec = spec.and(AddressSpecification.hasVerticalCircle(verticalCircle));
-		}
+		//if(verticalCircle>0.0) {
+		//	spec = spec.and(AddressSpecification.hasVerticalCircle(verticalCircle));
+		//}
 		
 		
 		int size = pageable.getPageSize();
@@ -183,8 +183,8 @@ public class AddressService {
 			page = 0;
 		}
 		
-		if(pageable.getPageSize() == 20 ) {
-			size = Integer.MAX_VALUE;
+		if(pageable.getPageSize() == Integer.MAX_VALUE ) {
+			//size = Integer.MAX_VALUE;
 			page = 0;
 		}
 		

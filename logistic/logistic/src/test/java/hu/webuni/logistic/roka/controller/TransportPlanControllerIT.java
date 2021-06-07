@@ -150,7 +150,7 @@ public class TransportPlanControllerIT {
 		Optional<TransportPlan> updatedPlan      = transportPlanRepository.findById(planID);
 	
 		assertThat(updatedPlan.get().getInCome())
-					.isNotEqualTo(income);
+					.isEqualTo(income);
 		
 		assertThat(updatedMilestone.get().getPlannedTime())
 					.isNotEqualTo(date);

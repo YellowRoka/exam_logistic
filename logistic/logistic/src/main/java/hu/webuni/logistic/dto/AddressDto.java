@@ -25,7 +25,7 @@ public class AddressDto {
 	private double horizontalCircle; //szélességi //latitude
 	private double verticalCircle;   //hosszúsági  //longitude
 	
-	private List<Milestone> milestone;
+	private Milestone milestone;
 
 	
 	public AddressDto(){}
@@ -122,19 +122,19 @@ public class AddressDto {
 		this.verticalCircle = verticalCircle;
 	};
 
-	public void setMilestone(List<Milestone> milestone) {
+	//public void setMilestone(List<Milestone> milestone) {
+	//	this.milestone = milestone;
+	//}
+	
+	public void addMilestone(Milestone milestone) {
 		this.milestone = milestone;
 	}
 	
-	public void addMilestone(Milestone milestone) {
-		this.milestone.add(milestone);
-	}
-	
-	public List<Milestone> getMilestone() {
+	public Milestone getMilestone() {
 		return this.milestone;
 	}
 	
-	public Milestone getMilestone(int idx) {
-		return this.milestone.get(idx);
-	}
+	//public Milestone getMilestone(int idx) {
+	//	return this.milestone.get(idx);
+	//}
 }

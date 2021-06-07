@@ -21,12 +21,14 @@ public class Milestone {
 	@GeneratedValue
 	private long          id;
 	
-	@ManyToMany//(mappedBy = "milestone")
-	//@OneToOne
+	@OneToMany(mappedBy = "milestone")
 	private List<Address>       address = new ArrayList<>();
 	
-	@OneToOne
-	private Section 	  section;
+	@OneToOne(mappedBy = "fromMilestone")
+	private Section 	  sectionFrom;
+	
+	@OneToOne(mappedBy = "toMilestone")
+	private Section 	  sectionTo;
 	
 	private LocalDateTime plannedTime;
 	
@@ -73,7 +75,7 @@ public class Milestone {
 		return this.address.get(idx);
 	}
 
-	public void setSection4From(Section section) {
+/*	public void setSection4From(Section section) {
 		section.setFromMilestone(this);
 		if(this.section == null)
 			this.section = section;
@@ -89,6 +91,6 @@ public class Milestone {
 		return this.section;
 	}
 
-
+*/
 
 }
