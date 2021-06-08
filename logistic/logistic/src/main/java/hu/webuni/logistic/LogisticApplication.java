@@ -21,6 +21,7 @@ public class LogisticApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		initDBService.clearDB();
+		initDBService.createUsersIfNeeded();
 		initDBService.insertTestData();
 	}
 

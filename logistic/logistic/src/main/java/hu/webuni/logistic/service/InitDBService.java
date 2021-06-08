@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import hu.webuni.logistic.model.Address;
 import hu.webuni.logistic.model.Milestone;
@@ -17,6 +20,9 @@ import hu.webuni.logistic.repository.AddressRepository;
 import hu.webuni.logistic.repository.MilestoneRepository;
 import hu.webuni.logistic.repository.SectionRepository;
 import hu.webuni.logistic.repository.TransportPlanRepository;
+import hu.webuni.logistic.security.LogisticUser;
+import hu.webuni.logistic.security.UserRepository;
+
 
 @Service
 public class InitDBService {
@@ -25,15 +31,20 @@ public class InitDBService {
 	MilestoneRepository     milestoneRepository;
 	AddressRepository       addressRepository;
 	SectionRepository       sectionRepository;
+	UserRepository          userRepository;
+	
+	PasswordEncoder         passwordEncoder;
 	
 
 	public InitDBService(TransportPlanRepository transportPlanRepository, MilestoneRepository milestoneRepository,
-			AddressRepository addressRepository, SectionRepository sectionRepository) {
+			AddressRepository addressRepository, SectionRepository sectionRepository,UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		super();
 		this.transportPlanRepository = transportPlanRepository;
-		this.milestoneRepository = milestoneRepository;
-		this.addressRepository = addressRepository;
-		this.sectionRepository = sectionRepository;
+		this.milestoneRepository     = milestoneRepository;
+		this.addressRepository       = addressRepository;
+		this.sectionRepository       = sectionRepository;
+		this.userRepository          = userRepository;
+		this.passwordEncoder         = passwordEncoder;
 	}
 
 	
@@ -43,6 +54,8 @@ public class InitDBService {
 		transportPlanRepository.deleteAll();
 		milestoneRepository.deleteAll();
 		addressRepository.deleteAll();	
+		
+		userRepository.deleteAll();
 	}
 
 	//@Transactional
@@ -98,5 +111,21 @@ public class InitDBService {
 			sections = sectionRepository.saveAll(sections);
 			 
 		return null;
+	}
+
+	@Transactional
+	public void createUsersIfNeeded() {
+		
+		if(!userRepository.existsById("TransportManager")) {
+			userRepository.save(new LogisticUser("TransportManager", passwordEncoder.encode("pass"), Set.of("TM","U") ));
+		}
+		
+		if(!userRepository.existsById("AddressManager")) {
+			userRepository.save(new LogisticUser("AddressManager", passwordEncoder.encode("pass"), Set.of("AM","U") ));
+		}
+		
+		if(!userRepository.existsById("user")) {
+			userRepository.save(new LogisticUser("user", passwordEncoder.encode("pass"), Set.of("U") ));
+		}
 	}
 }

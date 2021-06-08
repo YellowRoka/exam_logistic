@@ -19,6 +19,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,7 @@ public class AddressController {
 	AddressService addressService;
 
 	@PostMapping
+	//@PreAuthorize("hasAuthority('AM')")
 	public AddressDto addAddress(@RequestBody AddressDto newAddressDto) {
 		
 		Address newAddress   = addressMapping.dtoToModel(newAddressDto); 
@@ -74,8 +76,9 @@ public class AddressController {
 	}
 	
 	@PutMapping("/{id}")
+	//@PreAuthorize("hasAuthority('AM')")
 	public AddressDto modifyAddress(@PathVariable long id,  
-									@RequestBody AddressDto addressDto) {
+									@RequestBody AddressDto addressDto) throws Exception {
 	
 		if( (addressDto == null)||
 		    (addressDto.getId() != id)||
@@ -92,11 +95,12 @@ public class AddressController {
 		
 		Address modderAddress = addressMapping.dtoToModel(addressDto);
 		Address newAddress    = null;
-		try {
+		//try {
 			newAddress = addressService.modifiyById(id, modderAddress);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		//} catch (Exception e) {
+		//	e.printStackTrace();
+		//	throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		//}
 		return addressMapping.modelToDto(newAddress);
 	}
 	/*
@@ -111,6 +115,7 @@ public class AddressController {
 	
 	//sample: http://localhost:8080/api/addresses/search?page=0&size=1,asc
 	@PostMapping("/search")
+	//@PreAuthorize("hasAuthority('AM')")
 	public ResponseEntity<ExtendedPage<AddressDto>> searchAddressesByExample( @RequestBody AddressDto addressDto,
 													  @SortDefault(sort = "id", direction = Sort.Direction.DESC)
 													  @PageableDefault(value = Integer.MAX_VALUE)Pageable pageable){
